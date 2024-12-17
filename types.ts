@@ -11,10 +11,12 @@ export type BottomTabParamList = {
 };
 
 export type MainStackParamList = {
-    Auth: NavigatorScreenParams<AuthStackParamList>;
-    App: NavigatorScreenParams<BottomTabParamList>;
-    Home: undefined;
-    Profile: undefined;
+    Splash: undefined;
+    Auth: undefined;
+    App: undefined;
     "Event List": undefined;
-    "Event Detail": { eventId: string };
+    Profile: undefined;
+    "Event Detail": { eventId: any };
+    Modal: { eventId: any };
 };
+

@@ -19,7 +19,7 @@ type HorizontalEventCardProps = {
     date: string;
     time: string;
     price?: string;
-    onPress: () => void;
+    onPress: () => void; // Fonction fournie par le parent
 };
 
 export default function HorizontalEventCard({
@@ -28,10 +28,10 @@ export default function HorizontalEventCard({
                                                 date,
                                                 time,
                                                 price,
-                                                onPress,
+                                                onPress, // Délégué au parent
                                             }: HorizontalEventCardProps) {
     return (
-        <View style={styles.cardContainer}>
+        <TouchableOpacity style={styles.cardContainer} onPress={onPress}>
             {/* Image */}
             <View style={styles.imageContainer}>
                 <Image source={image} style={styles.cardImage} />
@@ -51,12 +51,10 @@ export default function HorizontalEventCard({
                 {/* Prix et bouton */}
                 <View style={styles.bottomRow}>
                     {price && <Text style={styles.eventPrice}>{price}</Text>}
-                    <TouchableOpacity onPress={onPress}>
-                        <Text style={styles.buyTicket}>Buy Ticket &gt;</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.buyTicket}>Buy Ticket &gt;</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
@@ -65,15 +63,17 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         backgroundColor: "#fff",
         borderRadius: 12,
-        elevation: 4,
         margin: 10,
         overflow: "hidden",
         ...Platform.select({
             ios: {
                 shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.2,
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.25,
                 shadowRadius: 4,
+            },
+            android: {
+                elevation: 4,
             },
         }),
         width: width * 0.9,

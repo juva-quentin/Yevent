@@ -3,13 +3,26 @@ import { RegisterParams, LoginParams, User } from "../models/AuthModels";
 
 export const authService = {
     register: async ({ fullName, email, password }: RegisterParams): Promise<void> => {
-        const { data, error } = await supabase.auth.signUp({
+        // 1. Créer un utilisateur dans Supabase Auth
+        const { data: authData, error: authError } = await supabase.auth.signUp({
             email,
             password,
             options: { data: { full_name: fullName } },
         });
 
-        if (error) throw new Error(`Register failed: ${error.message}`);
+        if (authError) throw new Error(`Register failed: ${authError.message}`);
+
+        // 2. Ajouter également l'utilisateur en base de données (table User)
+        const { error: dbError } = await supabase.from("User").insert([
+            {
+                userId: authData.user?.id, // Utiliser l'ID généré par Supabase Auth
+                name: fullName,
+                email,
+                password: password, // Stocker un hash si nécessaire
+            },
+        ]);
+
+        if (dbError) throw new Error(`Failed to save user in DB: ${dbError.message}`);
         return;
     },
 

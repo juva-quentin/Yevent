@@ -18,7 +18,7 @@ type SmallEventCardProps = {
     date: string;
     time: string;
     tickets: string;
-    onPress: () => void;
+    onPress: () => void; // Fonction passée par le parent
 };
 
 export default function SmallEventCard({
@@ -27,108 +27,57 @@ export default function SmallEventCard({
                                            date,
                                            time,
                                            tickets,
-                                           onPress,
+                                           onPress, // Reçu du parent
                                        }: SmallEventCardProps) {
     return (
-        <View style={styles.cardShadow}>
-            <View style={styles.cardContainer}>
-                {/* Image avec Shadow */}
-                <View style={styles.imageContainer}>
-                    <Image source={image} style={styles.cardImage} />
-                </View>
-
-                {/* Contenu de la carte */}
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.eventTitle}>{title}</Text>
-                    <View style={styles.eventRow}>
-                        <FontAwesome5 name="calendar" size={12} color="#777" />
+        <TouchableOpacity style={styles.cardContainer} onPress={onPress}>
+            <View style={styles.imageShadowContainer}>
+                <Image source={image} style={styles.cardImage} />
+            </View>
+            <View style={styles.detailsContainer}>
+                <Text style={styles.eventTitle}>{title}</Text>
+                <View style={styles.eventRow}>
+                    <View style={styles.iconTextContainer}>
+                        <FontAwesome5 name="calendar" size={10} color="#777" />
                         <Text style={styles.eventText}> {date}</Text>
-                        <View style={{ marginHorizontal: 8 }} />
-                        <FontAwesome5 name="clock" size={12} color="#777" />
+                    </View>
+                    <View style={styles.iconTextContainer}>
+                        <FontAwesome5 name="clock" size={10} color="#777" />
                         <Text style={styles.eventText}> {time}</Text>
                     </View>
-
-                    {/* Tickets */}
-                    <View style={styles.ticketRow}>
-                        <Text style={styles.tickets}>{tickets}</Text>
-                        <TouchableOpacity onPress={onPress}>
-                            <Text style={styles.buyTicket}>Buy Ticket &gt;</Text>
-                        </TouchableOpacity>
-                    </View>
+                </View>
+                <View style={styles.ticketRow}>
+                    <Text style={styles.tickets}>{tickets}</Text>
+                    <Text style={styles.buyTicket}>Buy Ticket</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    cardShadow: {
-        margin: 10,
-        borderRadius: 12,
+    cardContainer: {
         backgroundColor: "#fff",
+        borderRadius: 10,
+        width: width * 0.45,
+        height: width * 0.5,
+        marginHorizontal: 10,
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.1)",
         ...Platform.select({
-            ios: {
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.2,
-                shadowRadius: 6,
-            },
-            android: {
-                elevation: 6,
-            },
+            ios: { shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 4 },
+            android: { elevation: 4 },
         }),
     },
-    cardContainer: {
-        borderRadius: 12,
-        overflow: "hidden",
-        backgroundColor: "#fff",
-        width: width * 0.45, // Largeur fixe pour la carte
-    },
-    imageContainer: {
-        borderRadius: 12,
-        margin: 8,
-        overflow: "hidden",
-        backgroundColor: "#fff",
-    },
-    cardImage: {
-        width: "100%",
-        height: 120,
-        borderRadius: 10,
-    },
-    detailsContainer: {
-        paddingHorizontal: 10,
-        paddingBottom: 10,
-        paddingTop: 5,
-    },
-    eventTitle: {
-        fontWeight: "bold",
-        fontSize: 14,
-        color: "#000",
-        marginBottom: 5,
-    },
-    eventRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 5,
-    },
-    eventText: {
-        fontSize: 12,
-        color: "#777",
-    },
-    ticketRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 5,
-    },
-    tickets: {
-        fontSize: 12,
-        fontWeight: "bold",
-        color: "#6A5ACD",
-    },
-    buyTicket: {
-        fontSize: 12,
-        color: "#6A5ACD",
-        fontWeight: "bold",
-    },
+    imageShadowContainer: { margin: 6, borderRadius: 10, backgroundColor: "#fff" },
+    cardImage: { width: "100%", height: 120, borderRadius: 10 },
+    detailsContainer: { paddingHorizontal: 10 },
+    eventTitle: { fontSize: 12, fontWeight: "600", color: "black", marginTop: 5, marginBottom: 5 },
+    eventRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 30 },
+    iconTextContainer: { flexDirection: "row", alignItems: "center" },
+    eventText: { fontSize: 10, fontWeight: "300", color: "rgba(0, 0, 0, 0.4)" },
+    ticketRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+    tickets: { fontSize: 10, fontWeight: "600", color: "#6A7BFF" },
+    buyTicket: { fontSize: 10, fontWeight: "600", color: "#6A7BFF" },
 });

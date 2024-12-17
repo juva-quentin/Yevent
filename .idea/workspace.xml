@@ -4,40 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bea45cc-897a-46d7-849a-03fb110b9890" name="Changes" comment="added all the principal screen">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/adaptive-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/background.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/event1.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/splash-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/CustomButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/CustomInput.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/HorizontalEventCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/SmallEventCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/SocialButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/AuthModels.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/navigation/AppNavigator.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/AuthScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/EventDetailScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/EventListScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/HomeScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/MapScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/ProfileScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/ScanQRScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/SplashScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/TicketDetailScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/authService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/notificationService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/supabase.ts" afterDir="false" />
+    <list default="true" id="6bea45cc-897a-46d7-849a-03fb110b9890" name="Changes" comment="commit parceque c'est pas mal">
+      <change afterPath="$PROJECT_DIR$/components/CustomTabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/EventModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/ReservationModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/navigation/_layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/eventService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HorizontalEventCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HorizontalEventCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SmallEventCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SmallEventCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigation/AppNavigator.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/EventDetailScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/EventDetailScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/EventListScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/EventListScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/HomeScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/MapScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/MapScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/services/authService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,23 +42,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/quentinjuvet/Documents/react native/yevent&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/quentinjuvet/Documents/react native/yevent/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/quentinjuvet/Documents/react native/yevent/supabase",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Users/quentinjuvet/Documents/react native/yevent/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/supabase" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/utils" />
       <recent name="$PROJECT_DIR$/assets/images" />
@@ -100,7 +87,7 @@
       <workItem from="1734338278939" duration="15000" />
       <workItem from="1734338298150" duration="4055000" />
       <workItem from="1734354837686" duration="8140000" />
-      <workItem from="1734363973701" duration="5602000" />
+      <workItem from="1734363973701" duration="30008000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -110,7 +97,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734362306583</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added all the principal screen">
+      <option name="closed" value="true" />
+      <created>1734388658253</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734388658253</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,6 +114,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="added all the principal screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="added all the principal screen" />
+    <MESSAGE value="commit parceque c'est pas mal" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit parceque c'est pas mal" />
   </component>
 </project>
