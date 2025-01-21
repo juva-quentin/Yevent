@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Modal } from "react-native";
 import CustomTabs from "../components/CustomTabs";
+
+// Import des écrans
 import HomeScreen from "../screens/HomeScreen";
 import MapScreen from "../screens/MapScreen";
 import ScanQRScreen from "../screens/ScanQRScreen";
@@ -12,6 +14,7 @@ import AuthScreen from "../screens/AuthScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EventListScreen from "../screens/EventListScreen";
 import EventDetailScreen from "../screens/EventDetailScreen";
+import TicketDetailScreen from "../screens/TicketDetailScreen"; // Import de la page des détails des tickets
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +55,7 @@ export default function RootLayout() {
                 <Stack.Screen name="Event List" component={EventListScreen} />
                 <Stack.Screen name="Profile" component={ProfileScreen} />
                 <Stack.Screen name="Event Detail" component={EventDetailScreen} />
+                <Stack.Screen name="Ticket Detail" component={TicketDetailScreen} />
                 <Stack.Screen name="Modal" component={ModalScreen} />
             </Stack.Navigator>
         </NavigationContainer>

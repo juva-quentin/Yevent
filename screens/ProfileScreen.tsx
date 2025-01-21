@@ -5,18 +5,22 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    ActivityIndicator,
     Alert,
+    SafeAreaView,
+    Image,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Feather } from "@expo/vector-icons";
 import { authService } from "../services/authService";
+import { reservationService } from "../services/reservationService";
 import { eventService } from "../services/eventService";
 import { User } from "../models/AuthModels";
 import { ReservationModel } from "../models/ReservationModel";
+import { EventModel } from "../models/EventModel";
 
 export default function ProfileScreen({ navigation }: any) {
     const [user, setUser] = useState<User | null>(null);
     const [reservations, setReservations] = useState<ReservationModel[]>([]);
+    const [events, setEvents] = useState<Record<string, EventModel>>({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -27,8 +31,21 @@ export default function ProfileScreen({ navigation }: any) {
                     setUser(currentUser);
 
                     // Fetch reservations for the user
-                    const reservationsData = await eventService.getUserReservations(currentUser.id);
+                    const reservationsData = await reservationService.getReservationsByUser(
+                        currentUser.id
+                    );
                     setReservations(reservationsData);
+
+                    // Fetch event details for all reservations
+                    const eventPromises = reservationsData.map((reservation) =>
+                        eventService.getEventById(reservation.eventid)
+                    );
+                    const eventDetails = await Promise.all(eventPromises);
+                    const eventsMap = eventDetails.reduce((acc, event) => {
+                        if (event) acc[event.eventid] = event;
+                        return acc;
+                    }, {} as Record<string, EventModel>);
+                    setEvents(eventsMap);
                 }
             } catch (error: any) {
                 console.error("Error fetching user data:", error.message);
@@ -46,134 +63,232 @@ export default function ProfileScreen({ navigation }: any) {
             await authService.logout();
             navigation.replace("Auth");
         } catch (error: any) {
-            console.error("Error logging out:", error.message);
-            Alert.alert("Error", "Failed to log out.");
+            console.error("Error during logout:", error.message);
+            Alert.alert("Error", "Failed to log out. Please try again.");
         }
     };
 
-    const renderReservation = ({ item }: { item: ReservationModel }) => (
-        <View style={styles.reservationCard}>
-            <Text style={styles.eventTitle}>Event ID: {item.eventId}</Text>
-            <Text>Tickets: {item.tickets}</Text>
-            <Text>Total Price: ${item.totalPrice.toFixed(2)}</Text>
-            <Text>Date: {new Date(item.timestamp).toLocaleDateString()}</Text>
-        </View>
-    );
+    const handleReservationPress = (reservation: ReservationModel) => {
+        navigation.navigate("Ticket Detail", { reservationId: reservation.reservationid });
+    };
 
-    if (loading) {
-        return (
-            <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color="#6A5ACD" />
-            </View>
-        );
-    }
+    const renderReservationCard = ({ item }: { item: ReservationModel }) => {
+        const event = events[item.eventid];
+        if (!event) return null;
 
-    if (!user) {
+        const eventDate = new Date(event.date).toLocaleDateString();
+        const eventTime = new Date(event.date).toLocaleTimeString();
+
         return (
-            <View style={styles.container}>
-                <Text style={styles.errorText}>Failed to load user information.</Text>
-            </View>
+            <TouchableOpacity onPress={() => handleReservationPress(item)}>
+                <View style={styles.card}>
+                    <Image
+                        source={require("../assets/images/event1.jpeg")}
+                        style={styles.cardImage}
+                    />
+                    <View style={styles.cardContent}>
+                        <Text style={styles.cardTitle}>{event.title}</Text>
+                        <Text style={styles.cardText}>Location: {event.location}</Text>
+                        <Text style={styles.cardText}>Date: {eventDate}</Text>
+                        <Text style={styles.cardText}>Time: {eventTime}</Text>
+                        <Text style={styles.cardText}>Tickets Reserved: {item.tickets}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
         );
-    }
+    };
 
     return (
-        <View style={styles.container}>
-            {/* User Information */}
-            <View style={styles.profileHeader}>
-                <FontAwesome5 name="user-circle" size={80} color="#6A5ACD" />
-                <Text style={styles.userName}>{user.fullName}</Text>
-                <Text style={styles.userEmail}>{user.email}</Text>
+        <SafeAreaView style={styles.container}>
+            {/* Header */}
+            <View style={styles.header}>
+                <View style={styles.headerIcons}>
+                    <TouchableOpacity
+                        style={styles.iconButton}
+                        onPress={() => navigation.goBack()}
+                    >
+                        <FontAwesome5 name="arrow-left" size={20} color="#000" />
+                    </TouchableOpacity>x
+                </View>
+                <Text style={styles.headerTitle}>My Profile</Text>
+                <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+                    <Text style={styles.logoutButtonText}>Logout</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* Profile Information */}
+            <View style={styles.profileBox}>
+                <FontAwesome5 name="user-circle" size={80} color="#6A5ACD" style={styles.profileIcon} />
+                <View style={styles.profileInfo}>
+                    <View style={styles.infoRow}>
+                        <Text style={styles.infoLabel}>Full Name</Text>
+                        <Text style={styles.infoValue}>{user?.fullName || "N/A"}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={styles.infoLabel}>Email</Text>
+                        <Text style={styles.infoValue}>{user?.email || "N/A"}</Text>
+                    </View>
+                </View>
             </View>
 
             {/* Reservations */}
-            <View style={styles.section}>
+            <View style={styles.reservationsSection}>
                 <Text style={styles.sectionTitle}>Your Tickets</Text>
-                {reservations.length > 0 ? (
+                {loading ? (
+                    <Text style={styles.loadingText}>Loading...</Text>
+                ) : reservations.length > 0 ? (
                     <FlatList
                         data={reservations}
-                        keyExtractor={(item) => item.reservationId}
-                        renderItem={renderReservation}
+                        keyExtractor={(item) => item.reservationid}
+                        renderItem={renderReservationCard}
                         contentContainerStyle={styles.reservationsList}
                     />
                 ) : (
                     <Text style={styles.noReservations}>No tickets purchased yet.</Text>
                 )}
             </View>
-
-            {/* Logout Button */}
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#fff", padding: 20 },
-    profileHeader: {
+    container: { flex: 1, backgroundColor: "#F9F9F9" },
+    header: {
+        flexDirection: "row",
         alignItems: "center",
-        marginBottom: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        backgroundColor: "#F9F9F9",
     },
-    userName: {
-        fontSize: 24,
+    headerTitle: {
+        fontSize: 20,
         fontWeight: "bold",
         color: "#333",
-        marginTop: 10,
+        textAlign: "center",
+        flex: 1,
     },
-    userEmail: {
-        fontSize: 16,
+    headerIcons: {
+        position: "absolute",
+        top: 40,
+        left: 20,
+        backgroundColor: "#fff",
+        padding: 10,
+        borderRadius: 25,
+        elevation: 5,
+    },
+    iconButton: {
+        position: "absolute",
+        left: 20,
+        backgroundColor: "#FFF",
+        padding: 10,
+        borderRadius: 50,
+        elevation: 3,
+    },
+    logoutButton: {
+        position: "absolute",
+        right: 20,
+        backgroundColor: "#6A5ACD",
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
+    logoutButtonText: {
+        color: "#FFF",
+        fontSize: 14,
+        fontWeight: "600",
+    },
+    profileBox: {
+        backgroundColor: "#fff",
+        borderRadius: 10,
+        marginHorizontal: 20,
+        padding: 20,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+        marginTop: 20,
+    },
+    profileIcon: {
+        marginBottom: 20,
+    },
+    profileInfo: {
+        width: "100%",
+    },
+    infoRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 10,
+    },
+    infoLabel: {
+        fontSize: 14,
         color: "#666",
+        fontWeight: "600",
     },
-    section: { marginTop: 20 },
+    infoValue: {
+        fontSize: 14,
+        color: "#333",
+        fontWeight: "600",
+    },
+    reservationsSection: {
+        marginTop: 20,
+        flex: 1,
+        paddingHorizontal: 10,
+    },
     sectionTitle: {
         fontSize: 18,
         fontWeight: "bold",
         color: "#333",
         marginBottom: 10,
+        paddingHorizontal: 10,
     },
     reservationsList: {
-        paddingBottom: 20,
-    },
-    reservationCard: {
-        backgroundColor: "#F9F9F9",
-        borderRadius: 10,
-        padding: 15,
-        marginBottom: 10,
-        borderWidth: 1,
-        borderColor: "#DDD",
-    },
-    eventTitle: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: "#6A5ACD",
-        marginBottom: 5,
+        justifyContent: "space-between",
     },
     noReservations: {
-        fontSize: 16,
+        fontSize: 14,
         color: "#999",
         textAlign: "center",
         marginTop: 20,
     },
-    logoutButton: {
+    loadingText: {
+        fontSize: 14,
+        color: "#999",
+        textAlign: "center",
         marginTop: 20,
-        backgroundColor: "#6A5ACD",
-        paddingVertical: 15,
-        borderRadius: 10,
-        alignItems: "center",
     },
-    logoutText: {
-        color: "#fff",
+    card: {
+        flexDirection: "row",
+        backgroundColor: "#fff",
+        borderRadius: 10,
+        marginVertical: 10,
+        marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    cardImage: {
+        width: 100,
+        height: 100,
+        borderTopLeftRadius: 10,
+        borderBottomLeftRadius: 10,
+    },
+    cardContent: {
+        flex: 1,
+        padding: 10,
+    },
+    cardTitle: {
         fontSize: 16,
         fontWeight: "bold",
+        color: "#333",
+        marginBottom: 5,
     },
-    loaderContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    errorText: {
-        fontSize: 18,
-        color: "red",
-        textAlign: "center",
+    cardText: {
+        fontSize: 14,
+        color: "#666",
+        marginBottom: 5,
     },
 });

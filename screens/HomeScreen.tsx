@@ -139,24 +139,29 @@ export default function HomeScreen({ navigation }: Props) {
                             <Text style={styles.seeMore}>See More</Text>
                         </TouchableOpacity>
                     </View>
-                    <FlatList
-                        data={nearbyEvents}
-                        keyExtractor={(event) => event.eventid}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <SmallEventCard
-                                image={require("../assets/images/event1.jpeg")}
-                                title={item.title}
-                                date={new Date(item.date).toLocaleDateString()}
-                                time={new Date(item.date).toLocaleTimeString()}
-                                tickets={`${item.ticketsremaining ?? 0} / ${item.capacity ?? 0}`}
-                                onPress={() => navigation.navigate("Event Detail", { eventId: item.eventid })}
-                            />
-                        )}
-                        contentContainerStyle={styles.flatListContainer}
-                    />
-
+                    {nearbyEvents.length === 0 ? (
+                        renderEmptyList("No nearby events available.")
+                    ) : (
+                        <FlatList
+                            data={nearbyEvents}
+                            keyExtractor={(event) => event.eventid}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item }) => (
+                                <SmallEventCard
+                                    image={require("../assets/images/event1.jpeg")}
+                                    title={item.title}
+                                    date={new Date(item.date).toLocaleDateString()}
+                                    time={new Date(item.date).toLocaleTimeString()}
+                                    tickets={`${item.ticketsremaining ?? 0} / ${item.capacity ?? 0}`}
+                                    onPress={() =>
+                                        navigation.navigate("Event Detail", { eventId: item.eventid })
+                                    }
+                                />
+                            )}
+                            contentContainerStyle={[styles.flatListContainer, styles.spacingBetweenLists]}
+                        />
+                    )}
 
                     {/* Popular Events */}
                     <View style={styles.sectionHeader}>
@@ -165,21 +170,27 @@ export default function HomeScreen({ navigation }: Props) {
                             <Text style={styles.seeMore}>See More</Text>
                         </TouchableOpacity>
                     </View>
-                    <FlatList
-                        data={popularEvents}
-                        keyExtractor={(event) => event.eventid}
-                        renderItem={({ item }) => (
-                            <HorizontalEventCard
-                                image={require("../assets/images/event1.jpeg")}
-                                title={item.title}
-                                date={new Date(item.date).toLocaleDateString()}
-                                time={new Date(item.date).toLocaleTimeString()}
-                                price={`$${item.capacity * 10}`}
-                                onPress={() => navigation.navigate("Event Detail", { eventId: item.eventid })}
-                            />
-                        )}
-                        contentContainerStyle={{ paddingHorizontal: 10 }}
-                    />
+                    {popularEvents.length === 0 ? (
+                        renderEmptyList("No popular events available.")
+                    ) : (
+                        <FlatList
+                            data={popularEvents}
+                            keyExtractor={(event) => event.eventid}
+                            renderItem={({ item }) => (
+                                <HorizontalEventCard
+                                    image={require("../assets/images/event1.jpeg")}
+                                    title={item.title}
+                                    date={new Date(item.date).toLocaleDateString()}
+                                    time={new Date(item.date).toLocaleTimeString()}
+                                    price={`$${item.capacity * 10}`}
+                                    onPress={() =>
+                                        navigation.navigate("Event Detail", { eventId: item.eventid })
+                                    }
+                                />
+                            )}
+                            contentContainerStyle={{ paddingHorizontal: 10 }}
+                        />
+                    )}
                 </View>
             )}
         </SafeAreaView>
@@ -195,14 +206,14 @@ const styles = StyleSheet.create({
         right: 0,
         backgroundColor: "#fff",
         zIndex: 10,
-        paddingBottom: 10, // Ajout d'une légère marge sous le header
+        paddingBottom: 10,
     },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: 20,
-        paddingTop: 50, // Ajustement pour réduire l'espace en haut
+        paddingTop: 50,
         marginBottom: 10,
     },
     title: { fontSize: 28, fontWeight: "bold", color: "#333" },
@@ -211,7 +222,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F0F0F0",
         borderRadius: 15,
         marginHorizontal: 20,
-        paddingVertical: 15, // Taille de la search bar augmentée
+        paddingVertical: 15,
         paddingHorizontal: 20,
         alignItems: "center",
     },
@@ -221,24 +232,25 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         color: "#333",
-        marginTop: 10, // Espacement au-dessus du titre
-        marginBottom: 5, // Réduction de l'espace sous le titre
+        marginTop: 10,
+        marginBottom: 5,
         paddingHorizontal: 20,
     },
     flatListContainer: { paddingHorizontal: 10, paddingVertical: 10 },
+    spacingBetweenLists: { marginBottom: 20 }, // Ajout d'un espace entre les deux listes
     emptyContainer: { alignItems: "center", justifyContent: "center", marginTop: 20 },
     emptyText: { fontSize: 16, color: "#999" },
     loader: { marginTop: 50 },
     sectionHeader: {
         flexDirection: "row",
-        justifyContent: "space-between", // Titre à gauche, "See More" à droite
+        justifyContent: "space-between",
         alignItems: "center",
         paddingRight: 20,
         marginTop: 10,
     },
     seeMore: {
         fontSize: 16,
-        color: "#6A5ACD", // Couleur pour le lien
+        color: "#6A5ACD",
         fontWeight: "bold",
     },
 });
