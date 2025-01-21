@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { Camera } from "expo-camera";
+import { Camera, CameraView } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ScanQRScreen() {
@@ -8,25 +8,27 @@ export default function ScanQRScreen() {
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [scanned, setScanned] = useState(false);
 
-    React.useEffect(() => {
-        const getCameraPermissions = async () => {
+    useEffect(() => {
+        const getPermissions = async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === "granted");
         };
 
-        getCameraPermissions();
+        getPermissions();
     }, []);
 
     if (hasPermission === null) {
-        return <View />;
+        return (
+            <View style={styles.container}>
+                <Text>Requesting Camera Permissions...</Text>
+            </View>
+        );
     }
 
-    if (hasPermission === false) {
+    if (!hasPermission) {
         return (
             <View style={styles.permissionContainer}>
-                <Text style={styles.permissionText}>
-                    We need your permission to access the camera.
-                </Text>
+                <Text style={styles.permissionText}>Camera access is required to scan QR codes.</Text>
                 <TouchableOpacity
                     style={styles.permissionButton}
                     onPress={async () => {
@@ -46,33 +48,31 @@ export default function ScanQRScreen() {
         setScanned(true);
 
         try {
-            // Suppose the QR code contains JSON data with `eventId`
-            const eventData = JSON.parse(data);
-            if (eventData?.eventId) {
+            if (data.trim() !== "") {
                 // @ts-ignore
-                navigation.navigate("Event Detail", { eventId: eventData.eventId });
+                navigation.navigate("Event Detail", { eventId: data });
             } else {
-                throw new Error("Invalid QR code data");
+                throw new Error("Invalid QR code format.");
             }
         } catch (error) {
-            alert("Invalid QR Code: Unable to retrieve event details.");
+            Alert.alert("Scan Error", "Invalid QR code. Please try again.");
         } finally {
-            setScanned(false); // Reset scanner after processing
+            setTimeout(() => setScanned(false), 2000);
         }
     };
 
     return (
         <View style={styles.container}>
-            <Camera
+            <CameraView
                 style={styles.camera}
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
             >
                 {!scanned && (
                     <View style={styles.scanBox}>
                         <Text style={styles.scanText}>Align QR Code within the frame</Text>
                     </View>
                 )}
-            </Camera>
+            </CameraView>
         </View>
     );
 }
