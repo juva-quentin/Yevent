@@ -19,6 +19,7 @@ import HorizontalEventCard from "../components/HorizontalEventCard";
 import { eventService } from "../services/eventService";
 import { EventModel } from "../models/EventModel";
 
+// @ts-ignore
 type Props = StackScreenProps<MainStackParamList, "Home">;
 
 export default function HomeScreen({ navigation }: Props) {
@@ -107,7 +108,7 @@ export default function HomeScreen({ navigation }: Props) {
             <View style={styles.fixedHeader}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Yevent</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
                         <FontAwesome5 name="user-circle" size={24} color="#000" />
                     </TouchableOpacity>
                 </View>

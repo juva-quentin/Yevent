@@ -4,8 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Modal } from "react-native";
 import CustomTabs from "../components/CustomTabs";
-
-// Import des écrans
 import HomeScreen from "../screens/HomeScreen";
 import MapScreen from "../screens/MapScreen";
 import ScanQRScreen from "../screens/ScanQRScreen";

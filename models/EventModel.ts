@@ -1,5 +1,3 @@
-// src/models/EventModel.ts
-
 export type Coordinates = {
     latitude: number;
     longitude: number;
@@ -12,7 +10,7 @@ export type EventModel = {
     location: string; // Adresse ou localisation textuelle
     date: Date; // Date de l'événement
     capacity: number; // Capacité maximale de l'événement
-    ticketsremaining: number;
+    ticketsremaining: number; // Tickets restants
     maplocation: Coordinates; // Coordonnées géographiques de l'événement
-    ticketprice: number;
+    ticketprice: number; // Prix du billet
 };

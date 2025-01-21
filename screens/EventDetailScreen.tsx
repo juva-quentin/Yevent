@@ -8,14 +8,13 @@ import {
     ActivityIndicator,
     Modal,
     FlatList,
-    PanResponder,
-    Animated,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { MainStackParamList } from "../types";
 import { eventService } from "../services/eventService";
 import { EventModel } from "../models/EventModel";
+import SliderButton from "../components/SliderButton";
 
 type EventDetailScreenRouteProp = RouteProp<MainStackParamList, "Event Detail">;
 
@@ -26,7 +25,6 @@ const EventDetailScreen = () => {
     const [loading, setLoading] = useState(true);
     const [selectedTickets, setSelectedTickets] = useState(1);
     const [isModalVisible, setModalVisible] = useState(false);
-    const [slidePosition] = useState(new Animated.Value(0));
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -49,24 +47,13 @@ const EventDetailScreen = () => {
         setModalVisible(false);
     };
 
-    const slideResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: () => true,
-        onPanResponderMove: (_, gestureState) => {
-            const position = Math.max(0, Math.min(gestureState.dx, 150)); // Slide limité à 150px
-            slidePosition.setValue(position);
-        },
-        onPanResponderRelease: (_, gestureState) => {
-            if (gestureState.dx > 100) {
-                console.log("Ticket purchased!");
-            }
-            Animated.timing(slidePosition, {
-                toValue: 0,
-                duration: 300,
-                useNativeDriver: false,
-            }).start();
-        },
-    });
+    const handleSlideComplete = () => {
+        if (event) {
+            alert(
+                `You purchased ${selectedTickets} ticket(s) for $${event.ticketprice * selectedTickets}`
+            );
+        }
+    };
 
     if (loading) {
         return (
@@ -129,7 +116,7 @@ const EventDetailScreen = () => {
 
             {/* Sélecteur de tickets et slider */}
             <View style={styles.bottomContainer}>
-                {/* Selecteur de tickets */}
+                {/* Sélecteur de tickets */}
                 <TouchableOpacity
                     style={styles.ticketSelector}
                     onPress={() => setModalVisible(true)}
@@ -142,23 +129,15 @@ const EventDetailScreen = () => {
 
                 <View style={styles.spaceBetween} />
 
-                <View style={styles.sliderContainer}>
-                    <Animated.View
-                        {...slideResponder.panHandlers}
-                        style={[
-                            styles.sliderThumb,
-                            { transform: [{ translateX: slidePosition }] },
-                        ]}
-                    >
-                        <FontAwesome5 name="angle-double-right" size={20} color="#6A5ACD" />
-                    </Animated.View>
-                    <Text style={styles.sliderText}>
-                        Slide to Buy - ${event.ticketprice * selectedTickets}
-                    </Text>
-                </View>
+                {/* Slider */}
+                <SliderButton
+                    onSlideComplete={handleSlideComplete}
+                    selectedTickets={selectedTickets}
+                    ticketPrice={event.ticketprice}
+                />
             </View>
 
-
+            {/* Modal pour sélectionner le nombre de tickets */}
             <Modal visible={isModalVisible} transparent animationType="slide">
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
@@ -177,7 +156,6 @@ const EventDetailScreen = () => {
                                     <Text style={styles.modalItemText}>{item}</Text>
                                 </TouchableOpacity>
                             )}
-                            style={{ flexGrow: 0 }}
                         />
                         <TouchableOpacity onPress={() => setModalVisible(false)}>
                             <Text style={styles.modalClose}>Close</Text>
@@ -192,7 +170,7 @@ const EventDetailScreen = () => {
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#fff" },
     headerImage: { height: 300, justifyContent: "space-between" },
-    headerIcons: { flexDirection: "row", justifyContent: "space-between", padding: 20, marginTop: 30 },
+    headerIcons: { flexDirection: "row", justifyContent: "space-between", padding: 20 },
     iconButton: { backgroundColor: "white", borderRadius: 20, padding: 10 },
     contentContainer: { padding: 20 },
     eventTitle: { fontSize: 24, fontWeight: "bold", marginBottom: 10 },
@@ -209,34 +187,23 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginVertical: 10,
     },
-
-    ticketDetails: {
-        flexDirection: "column",
-    },
-
-    ticketLabel: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: "#000",
-    },
-
-    ticketCount: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#6A5ACD",
-    },
-
+    ticketDetails: { flexDirection: "column" },
+    ticketLabel: { fontSize: 16, fontWeight: "bold", color: "#000" },
+    ticketCount: { fontSize: 18, fontWeight: "bold", color: "#6A5ACD" },
     ticketIcon: {
         backgroundColor: "#EEE",
         borderRadius: 10,
         padding: 10,
         elevation: 2,
     },
-
-    ticketText: { fontSize: 16, fontWeight: "bold" },
     sectionTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
     descriptionText: { fontSize: 14, color: "gray", marginBottom: 20 },
-    bottomContainer: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 20 },
+    bottomContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 20,
+    },
     ticketSelector: {
         flexDirection: "row",
         alignItems: "center",
@@ -250,33 +217,7 @@ const styles = StyleSheet.create({
     },
     ticketSelectorText: { fontSize: 16, color: "#333" },
     arrowContainer: { marginLeft: 5 },
-    spaceBetween: {
-        width: 20,
-    },
-    sliderContainer: {
-        flex: 1,
-        backgroundColor: "#6A5ACD",
-        borderRadius: 30,
-        height: 50,
-        justifyContent: "center",
-        position: "relative",
-    },
-    sliderThumb: {
-        position: "absolute",
-        backgroundColor: "#FFF",
-        borderRadius: 30,
-        width: 50,
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        elevation: 3,
-    },
-    sliderText: {
-        color: "#FFF",
-        fontSize: 16,
-        fontWeight: "bold",
-        textAlign: "center",
-    },
+    spaceBetween: { width: 20 },
     modalOverlay: { flex: 1, justifyContent: "center", alignItems: "center" },
     modalContainer: {
         backgroundColor: "#FFF",
