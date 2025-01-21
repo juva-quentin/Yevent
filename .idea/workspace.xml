@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bea45cc-897a-46d7-849a-03fb110b9890" name="Changes" comment="update the connexion">
+    <list default="true" id="6bea45cc-897a-46d7-849a-03fb110b9890" name="Changes" comment="adding ticket detail">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ReservationModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/ReservationModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigation/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/EventDetailScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/EventDetailScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/HomeScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ProfileScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/ScanQRScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ScanQRScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/TicketDetailScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/TicketDetailScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/eventService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/services/eventService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +86,7 @@
       <workItem from="1734354837686" duration="8140000" />
       <workItem from="1734363973701" duration="30926000" />
       <workItem from="1737367655591" duration="31596000" />
-      <workItem from="1737471399161" duration="455000" />
+      <workItem from="1737471399161" duration="1355000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -125,7 +120,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737450665562</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="adding ticket detail">
+      <option name="closed" value="true" />
+      <created>1737472108357</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1737472108357</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -137,6 +140,7 @@
     <MESSAGE value="commit parceque c'est pas mal" />
     <MESSAGE value="ça marche" />
     <MESSAGE value="update the connexion" />
-    <option name="LAST_COMMIT_MESSAGE" value="update the connexion" />
+    <MESSAGE value="adding ticket detail" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding ticket detail" />
   </component>
 </project>

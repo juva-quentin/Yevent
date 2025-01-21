@@ -102,19 +102,18 @@ export default function ProfileScreen({ navigation }: any) {
         <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
-                <View style={styles.headerIcons}>
-                    <TouchableOpacity
-                        style={styles.iconButton}
-                        onPress={() => navigation.goBack()}
-                    >
-                        <FontAwesome5 name="arrow-left" size={20} color="#000" />
-                    </TouchableOpacity>x
-                </View>
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={() => navigation.goBack()}
+                >
+                    <FontAwesome5 name="arrow-left" size={20} color="#000" />
+                </TouchableOpacity>
                 <Text style={styles.headerTitle}>My Profile</Text>
                 <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
                     <Text style={styles.logoutButtonText}>Logout</Text>
                 </TouchableOpacity>
             </View>
+
 
             {/* Profile Information */}
             <View style={styles.profileBox}>
@@ -155,38 +154,26 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#F9F9F9" },
     header: {
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "center", // Aligne verticalement
+        justifyContent: "space-between", // Espacement entre les éléments
         paddingHorizontal: 20,
-        paddingVertical: 20,
+        paddingVertical: 10, // Ajustez la hauteur
         backgroundColor: "#F9F9F9",
     },
+    iconButton: {
+        padding: 10,
+        borderRadius: 50,
+        backgroundColor: "#FFF",
+        elevation: 3,
+    },
     headerTitle: {
+        flex: 1, // Permet au titre de prendre tout l'espace disponible
         fontSize: 20,
         fontWeight: "bold",
         color: "#333",
-        textAlign: "center",
-        flex: 1,
-    },
-    headerIcons: {
-        position: "absolute",
-        top: 40,
-        left: 20,
-        backgroundColor: "#fff",
-        padding: 10,
-        borderRadius: 25,
-        elevation: 5,
-    },
-    iconButton: {
-        position: "absolute",
-        left: 20,
-        backgroundColor: "#FFF",
-        padding: 10,
-        borderRadius: 50,
-        elevation: 3,
+        textAlign: "center", // Centre le texte horizontalement
     },
     logoutButton: {
-        position: "absolute",
-        right: 20,
         backgroundColor: "#6A5ACD",
         borderRadius: 8,
         paddingHorizontal: 10,

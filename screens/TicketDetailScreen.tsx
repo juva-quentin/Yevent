@@ -82,16 +82,15 @@ export default function TicketDetailScreen() {
         <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
-                <View style={styles.headerIcons}>
-                    <TouchableOpacity
-                        style={styles.iconButton}
-                        onPress={() => navigation.goBack()}
-                    >
-                        <FontAwesome5 name="arrow-left" size={20} color="#000" />
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={() => navigation.goBack()}
+                >
+                    <FontAwesome5 name="arrow-left" size={20} color="#000" />
+                </TouchableOpacity>
                 <Text style={styles.headerTitle}>Ticket Details</Text>
             </View>
+
 
             {/* Tickets Carousel */}
             <FlatList
@@ -145,36 +144,26 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#F9F9F9" },
     header: {
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "center", // Aligne les éléments verticalement
         paddingHorizontal: 20,
-        paddingVertical: 20,
+        paddingVertical: 15, // Ajustez pour contrôler la hauteur
         backgroundColor: "#F9F9F9",
     },
     headerTitle: {
+        flex: 1, // Permet au titre d'occuper l'espace disponible
         fontSize: 20,
         fontWeight: "bold",
         color: "#333",
-        textAlign: "center",
-        flex: 1,
-    },
-    headerIcons: {
-        position: "absolute",
-        top: 40,
-        left: 20,
-        backgroundColor: "#fff",
-        padding: 10,
-        borderRadius: 25,
-        elevation: 5,
+        textAlign: "center", // Centre le titre horizontalement
     },
     iconButton: {
-        position: "absolute",
-        left: 20,
         padding: 10,
         borderRadius: 50,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#FFF",
         elevation: 3,
+        marginRight: 10, // Ajoute un espace pour ne pas coller au titre
     },
     ticketCard: {
         width: width * 0.9,
